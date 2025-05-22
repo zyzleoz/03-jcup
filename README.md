@@ -56,7 +56,7 @@ inicio ::= expr:e PTVIRG {: System.out.println(e); :}
 
 expr ::= expr:a MAIS expr:b  {: RESULT = a.intValue() + b.intValue(); :}
        | expr:a MENOS expr:b {: RESULT = a.intValue() - b.intValue(); :}
-       | INTEIRO:a {: RESULT = a.intValue(); :}
+       | INTEIRO:a           {: RESULT = a.intValue(); :}
        ;
 ```
 
