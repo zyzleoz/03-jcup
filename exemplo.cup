@@ -1,19 +1,43 @@
+/* imports no topo do arquivo */
 import java_cup.runtime.*;
+import java.lang.Math;
 
+parser code {:
+  // qualquer código auxiliar
+:};
+
+/* definição de tokens */
 terminal Integer INTEIRO;
-terminal MAIS, MENOS, PTVIRG;
+terminal MAIS, MENOS, MULTP, DIVIS, RESTO, POTEN, PTVIRG;
 
-non terminal inicio;
 non terminal Integer expr;
+non terminal Object inicio;  // ou Integer, se preferir
 
+/* precedências */
 precedence left MAIS, MENOS;
+precedence left MULTP, DIVIS, RESTO;
+precedence right POTEN;
 
 start with inicio;
 
-inicio ::= expr:e PTVIRG {: System.out.println(e); :}
-         ;
+/* regras */
+inicio ::= expr:e PTVIRG {: 
+              System.out.println(e); 
+          :}
+        ;
 
-expr ::= expr:a MAIS expr:b  {: RESULT = a.intValue() + b.intValue(); :}
-       | expr:a MENOS expr:b {: RESULT = a.intValue() - b.intValue(); :}
-       | INTEIRO:a           {: RESULT = a.intValue(); :}
+expr ::= expr:a MAIS expr:b   {: RESULT = a.intValue() + b.intValue(); :}
+       | expr:a MENOS expr:b  {: RESULT = a.intValue() - b.intValue(); :}
+       | expr:a MULTP expr:b  {: RESULT = a.intValue() * b.intValue(); :}
+       | expr:a DIVIS expr:b  {: RESULT = a.intValue() / b.intValue(); :}
+       | expr:a RESTO expr:b  {: RESULT = a.intValue() % b.intValue(); :}
+       | expr:a POTEN expr:b  {: 
+           RESULT = new Integer(
+                      (int) Math.pow(
+                        a.intValue(), 
+                        b.intValue()
+                      )
+                    );
+         :}
+       | INTEIRO:a            {: RESULT = a; :}
        ;
